@@ -1,0 +1,32 @@
+START
+  ↓
+research_planner_node
+  reads:  state["research_question"]
+  writes: state["plan"] (list of sub-topics + search queries), state["messages"]
+  ↓
+human_approval_node
+  interrupt() pauses here. Waits for user input.
+  user reviews plan, types "yes" or gives feedback
+  writes: state["approved"], state["rejection_feedback"]
+  ↓  route_after_approval
+     approved=false → research_planner_node   (rejection loop, use plan_attempts counter to bound it)
+     approved=true  → researcher_node
+researcher_node (topic 0)
+  reads:  state["plan"], state["current_topic_index"]
+  calls:  arxiv_search, arxiv_fetch_paper, web_search
+  writes: state["raw_findings"] (topic, sources, extracted text)
+  ↓
+critic_node (topic 0)
+  reads:  state["raw_findings"]
+  checks: is every claim traceable to a fetched source? any unsupported claims?
+  writes: state["gaps"] (list of unsupported/missing points), state["verified"] (bool)
+  ↓  route_after_critic
+     gaps found → researcher_node          (research loop, same topic, refine queries)
+     verified   → report_writer_node
+report_writer_node (topic 0)
+  reads:  state["raw_findings"], state["verified"]
+  writes: state["compiled_report"] += section, state["current_topic_index"] += 1
+  ↓  route_after_report
+     more topics remain → researcher_node (topic 1)
+     all topics done     → END
+END

@@ -1,0 +1,48 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "ai_agents"
+version = "0.0.1"
+description = "A short description of the project."
+authors = [
+  { name = "raghad" },
+]
+
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    
+]
+dependencies = [
+    "arxiv>=4.0.1",
+    "ddgs>=9.16.0",
+    "langchain>=1.2.11",
+    "langchain-mcp-adapters>=0.3.2",
+    "langchain-ollama==1.0.0",
+    "langfuse>=4.16.0",
+    "langgraph==1.1.0",
+    "langgraph-checkpoint-sqlite==3.0.3",
+    "mcp==1.26.0",
+    "pip",
+    "pydantic==2.11.9",
+    "python-dotenv",
+    "rich>=15.0.0",
+    "ruff",
+]
+requires-python = "~=3.10.0"
+
+
+[tool.ruff]
+line-length = 99
+src = ["ai_agents"]
+include = ["pyproject.toml", "ai_agents/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["ai_agents"]
+force-sort-within-sections = true
+

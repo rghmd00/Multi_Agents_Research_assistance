@@ -15,23 +15,30 @@ classifiers = [
     "Programming Language :: Python :: 3",
     
 ]
+
+
 dependencies = [
     "arxiv>=4.0.1",
     "ddgs>=9.16.0",
-    "langchain>=1.2.11",
-    "langchain-mcp-adapters>=0.3.2",
+    "langchain>=1.2.11",          # ← add back, langfuse's CallbackHandler needs it
+    "langchain-core>=1.0.0",       # now resolves to 1.6.6, compatible with langchain>=1.2.11
     "langchain-ollama==1.0.0",
-    "langfuse>=4.16.0",
+    "langfuse==4.0.1",
     "langgraph==1.1.0",
     "langgraph-checkpoint-sqlite==3.0.3",
     "mcp==1.26.0",
     "pip",
     "pydantic==2.11.9",
+    "pytest==8.3.0",
+    "pytest-asyncio==0.25.0",
     "python-dotenv",
-    "rich>=15.0.0",
+    "rich>=13.6.0,<15.0.0",
     "ruff",
+    "deepeval==3.9.1",
 ]
 requires-python = "~=3.10.0"
+
+
 
 
 [tool.ruff]

@@ -3,8 +3,12 @@ from pydantic import BaseModel, Field
 from src.graph.state import AgentState, ResearchTopic, Finding
 from src.llm import llm_json
 
-CRITIC_PROMPT = """Check this research summary against its sources. Flag any
-claim that is NOT supported by the source material below.
+
+
+CRITIC_PROMPT = """Check this research summary against its sources. The summary
+may contain claims that are NOT present in the sources at all — these are
+fabrications, even if they don't directly contradict anything, and must be
+flagged just as strictly as outright contradictions.
 
 Topic: {topic}
 Summary: {text}
@@ -12,7 +16,12 @@ Sources (IDs only, not full text): {sources}
 
 Respond with ONLY a JSON object in exactly this shape, no other text:
 {{"verified": true or false, "gaps": ["unsupported claim 1", "..."]}}
-If every claim is supported, use "gaps": [].
+
+IMPORTANT: if "gaps" contains anything, "verified" MUST be false. If every
+single claim traces directly back to the sources, use "gaps": [] and
+"verified": true. Any claim not explicitly present in the sources — including
+names, dates, places, or attributions not mentioned in the source material —
+counts as unsupported.
 """
 
 

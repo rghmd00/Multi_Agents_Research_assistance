@@ -14,7 +14,13 @@ class ResearchPlan(BaseModel):
 
 
 PLANNER_PROMPT = """You are a research planner. Break the research question into
-3-5 focused sub-topics to investigate.
+3-5 focused sub-topics that are specific, genuinely distinct, and researchable.
+
+Requirements:
+- Each topic must be a concrete research question or angle, not a vague category.
+- Topics must be non-overlapping and not near-duplicates.
+- Prefer narrow, answerable subtopics over broad themes.
+- Avoid generic umbrella labels like "applications" or "methods" unless combined with a concrete dimension.
 
 Research question: {question}
 {feedback_block}
